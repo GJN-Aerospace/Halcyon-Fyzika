@@ -1,0 +1,3 @@
+# Halcyon-Simulace
+
+Veškeré numerické simulace (primárně v jazyce Python) týkající se projektu- modelování letu, aerodynamika, PID regulátor....
