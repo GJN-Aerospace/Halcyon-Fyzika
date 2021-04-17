@@ -6,8 +6,6 @@ Created on Tue Apr  6 21:40:15 2021
 """
 
 
-
-
 def Runge_kutta4(y,v,a_1,a_2,a_3,dt):
     
     j_1 = dt*(a_1)
@@ -41,6 +39,17 @@ def Forward_Euler(y,v,a_1,dt):
     
     return y,v
 
+def Leap_frog(y,v,a_1,dt):
+    
+    dv = a_1*dt
+    dy = (v+dv)*dt
+    
+    y = y+dy
+    v = v+dv
+    
+    return y,v
+    
+    
 
 def Thrust(t):   # thrust force as a funtion of time
     if t>=0 and t<=0.7:
@@ -104,6 +113,8 @@ n = round(t_th/dt)# number of intervals
 
 TH = [0]
 T = [0]
+T1 = [0]
+T2 = [0]
 V = [0]
 Y = [0]
 M = [0.239]
@@ -139,13 +150,18 @@ for interval in range(n):
         V.append(v)
 
     else:
-        y = Runge_kutta4(y,v,a_1,a_2,a_3,dt)[0]
+     #   y = Runge_kutta4(y,v,a_1,a_2,a_3,dt)[0]
         #y = Forward_Euler(y,v,a_1,dt)[0]
+        y = Leap_frog(y,v,a_1,dt)[0]
         Y.append(y)
-        v = Runge_kutta4(y,v,a_1,a_2,a_3,dt)[1]
+        
+       # v = Runge_kutta4(y,v,a_1,a_2,a_3,dt)[1]
         #v = Forward_Euler(y,v,a_1,dt)[1]
+        v = Leap_frog(y,v,a_1,dt)[1]
         V.append(v)
     t +=dt
+    T1.append(2*dt*interval)   # time for Leap frog scenario
+    T2.append(2*dt*interval+dt) # time for Leap frog scenario
     T.append(t)
 
 
@@ -159,14 +175,18 @@ print(max(Y))
 print("The maximal velocity was")
 print(max(V))
 
-plt.plot(T,V, label = 'velocity')
-plt.plot(T,Y, label = 'height')
+#plt.plot(T,V, label = 'velocity')  # Runge-Kutta and forward Euler
+#plt.plot(T,Y, label = 'height')    # Runge-Kutta and forward Euler
 plt.plot(T,TH, label = 'thrust')
+
+plt.plot(T1,V, label = 'velocity')  # Leap frog
+plt.plot(T2,Y, label = 'height')    # Leap frog
 
 plt.title("Rocket flight", size=25)
 plt.xlabel("time(s)")
 plt.ylabel("Characteristics (SI)")
 
 plt.legend(loc="lower center", bbox_to_anchor=(1, 1))
+
 
 
