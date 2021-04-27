@@ -31,7 +31,7 @@ for i in range(round(T/dt)):
     x_n = [0 for i in range(len(x))]
     
     for j in range(round(len(x)-2)):
-         x_n[j+2] = (x_n[j+1]-x[j+1]-x[j+1]*C*(x[j+1]-x_n[j+2]-x[j])-E*(x_n[j+2]-2*x_n[j+1]+x[j]-2*x[j+1]+x[j+1]))/(x[j+1]*C+E*x_n[j+2]+0.00001)
+         x_n[j+2] = (x_n[j+1]-x[j+1]-x[j+1]*C*dt*(x[j+1]-x_n[j+2]-x[j])-E*dt*(x_n[j+2]-2*x_n[j+1]+x[j]-2*x[j+1]+x[j+1]))/(x[j+1]*C*dt+E*dt*x_n[j+2]+0.00001)
     
     X.append(x)
     x = x_n
